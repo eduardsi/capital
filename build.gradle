@@ -23,7 +23,7 @@ repositories {
 
 jar {
     baseName = 'capital'
-    version = appVersion
+    version = findProperty('appVersion') ?: 'UNKNOWN'
     manifest {
         attributes("Implementation-Title": baseName, "Implementation-Version": version)
     }
@@ -40,7 +40,7 @@ configurations {
 dependencies {
     compile 'org.codehaus.groovy:groovy-all:2.4.7'
     compile 'com.firebase:firebase-client-jvm:2.2.4'
-    compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.6.6'
+    compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.8.1'
     compile 'io.reactivex:rxgroovy:1.0.3'
     compile 'io.reactivex:rxjava-math:1.0.0'
     compile 'org.freemarker:freemarker:2.3.20'
@@ -48,4 +48,8 @@ dependencies {
     compile 'com.auth0:java-jwt:2.2.0'
     compile "org.springframework.boot:spring-boot-starter-web:1.4.0.RELEASE"
     compile "org.springframework.boot:spring-boot-starter-jetty:1.4.0.RELEASE"
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.14.1'
 }
