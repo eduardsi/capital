@@ -28,6 +28,7 @@ script:
   - export ANSIBLE_ROLES_PATH=$PWD/ansible_roles/
   - export ANSIBLE_HOST_KEY_CHECKING=False
   - eval `ssh-agent -s`
+  - chmod g-rx protected/digitalocean.pem
   - ssh-add protected/digitalocean.pem
   - ansible-galaxy install -r requirements.yml -p $ANSIBLE_ROLES_PATH
   - ansible-playbook -i production.hosts deploy-playbook.yml --extra-vars "appVersion=$TRAVIS_BUILD_NUMBER"
