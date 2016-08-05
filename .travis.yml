@@ -22,7 +22,8 @@ script:
   - transcrypt --display
   - java -version
   - javac -version
-  - ./gradlew build -PappVersion=$TRAVIS_BUILD_NUMBER
+  - ls -alR $JAVA_HOME
+  - ./gradlew build -PappVersion=$TRAVIS_BUILD_NUMBER -Dorg.gradle.java.home=$JAVA_HOME
   - cd provision
   - ansible-galaxy install -r requirements.yml
   - ansible-playbook -i production.hosts deploy-playbook.yml --extra-vars "appVersion=$TRAVIS_BUILD_NUMBER"
