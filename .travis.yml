@@ -19,9 +19,10 @@ install:
   - sudo apt-get install oracle-java8-installer
 
 script:
-  - echo $TRANSCRYPT_KEY
+  - transcrypt --display
   - ./gradlew build -PappVersion=$TRAVIS_BUILD_NUMBER
-  - ansible-playbook -i /provision/production.hosts /provision/deploy-playbook.yml --extra-vars "appVersion=$TRAVIS_BUILD_NUMBER"
+  - cd provision
+  - ansible-playbook -i production.hosts deploy-playbook.yml --extra-vars "appVersion=$TRAVIS_BUILD_NUMBER"
 
 env:
   global:
