@@ -1,5 +1,5 @@
 variable "public_key" {
-  default = "digio-capital.pub"
+  default = "protected/digitalocean.pub"
 }
 
 variable "access_token" {
