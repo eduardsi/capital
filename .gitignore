@@ -1,6 +1,7 @@
 .idea
 .gradle
 .envrc
+.terraform
 
 build
 
