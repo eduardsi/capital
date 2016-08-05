@@ -1,1 +1,1 @@
-config/*  filter=crypt diff=crypt
+provision/config-live.yml  filter=crypt diff=crypt
