@@ -19,11 +19,12 @@
     - name: Install the app
       copy: src=../build/libs/capital-{{appVersion}}.jar dest=/opt/capital/latest/capital.jar mode="u+rx,g-rx"
 
-    - name: Restart supervisor
-      service: name=supervisor state=restarted
+    - name: Install the configuration
+      copy: src=config-live.yml dest=/opt/capital/latest/config.yml
 
-    - name: start the app
-      supervisorctl: name=capital state=started
+    - name: Ensure supevisor is up
+      service: name=supervisor state=started
+
 
 
 

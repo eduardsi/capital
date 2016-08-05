@@ -51,7 +51,7 @@ angular.module('App').controller('OrderCtrl', function ($scope, $http, $location
 
     $scope.generateInvoice = function (index) {
         var key = $scope.keys[index];
-        $http.post("http://801b61f5.ngrok.io/orders/" + key + "/invoices", {})
+        $http.post("/orders/" + key + "/invoices", {})
             .success(function () {
                 alertify.success("OKI");
             })
@@ -63,7 +63,7 @@ angular.module('App').controller('OrderCtrl', function ($scope, $http, $location
 
     $scope.generateTicket = function (index) {
         var key = $scope.keys[index];
-        $http.post("http://801b61f5.ngrok.io/orders/" + key + "/tickets", {})
+        $http.post("/orders/" + key + "/tickets", {})
             .success(function () {
 
             })
@@ -79,7 +79,7 @@ angular.module('App').controller('OrderCtrl', function ($scope, $http, $location
             className: 'ngdialog-theme-default',
             controller: ['$scope', function ($popup) {
                 $popup.send = function (test) {
-                    $http.post("http://801b61f5.ngrok.io/invoices/" + key + "/send/" + test)
+                    $http.post("/invoices/" + key + "/send/" + test)
                         .success(function () {
                             alertify.success("OK!");
                         })
@@ -95,7 +95,7 @@ angular.module('App').controller('OrderCtrl', function ($scope, $http, $location
     $scope.setStatus = function (index, status) {
         var key = $scope.keys[index];
         $scope.orders[key].status = status;
-        $http.post("http://801b61f5.ngrok.io/orders/" + key + "/status/" + status)
+        $http.post("/orders/" + key + "/status/" + status)
             .success(function () {
                 alertify.success("OK!");
             })
@@ -112,7 +112,7 @@ angular.module('App').controller('OrderCtrl', function ($scope, $http, $location
             className: 'ngdialog-theme-default',
             controller: ['$scope', function ($popup) {
                 $popup.sendTickets = function (test) {
-                    $http.post("http://801b61f5.ngrok.io/tickets/" + key + "/send/" + test)
+                    $http.post("/tickets/" + key + "/send/" + test)
                         .success(function () {
                             alertify.success("OK!");
                         })

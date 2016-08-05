@@ -14,7 +14,7 @@ angular.module('App').controller('InvoiceCtrl', function ($rootScope, $scope, $s
 
         popup.result.then(function (invoice) {
             alert(JSON.stringify(invoice));
-            $http.post("http://801b61f5.ngrok.io/invoices", invoice)
+            $http.post("/invoices", invoice)
                 .success(function () {
                     alertify.success("OKI");
                 })
@@ -40,7 +40,7 @@ angular.module('App').controller('InvoiceCtrl', function ($rootScope, $scope, $s
             }
         });
         popup.result.then(function (email) {
-            $http.post("http://801b61f5.ngrok.io/email/" + email.to + "/" + "eduards@sizovs.net" + "/" + email.documentNumber, email.body)
+            $http.post("/email/" + email.to + "/" + "eduards@sizovs.net" + "/" + email.documentNumber, email.body)
                 .success(function () {
                     alertify.success("OKI");
                 })
