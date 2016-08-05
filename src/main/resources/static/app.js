@@ -41,7 +41,7 @@ app.config(function ($stateProvider, $urlRouterProvider, $httpProvider, $locatio
 
     authProvider.init({
         domain: 'craftsmans.eu.auth0.com',
-        clientID: 'mKSTU7Ad3BApunGUtx8kwPXkITsYDuPY',
+        clientID: 'N3fXLU6Vvi6FFlVzBE8W6fg6ujHXEi1M',
         loginState: 'login'
     });
 
