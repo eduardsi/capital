@@ -10,7 +10,7 @@ install:
   # Install Transcrypt
   - git clone https://github.com/elasticdog/transcrypt.git
   - sudo ln -s ${PWD}/transcrypt/transcrypt /usr/local/bin/transcrypt
-  - transcrypt -c aes-256-cbc -p '$TRANSCRYPT_KEY'
+  - transcrypt -y -c aes-256-cbc -p $TRANSCRYPT_KEY
 
   # Install Ansible
   - pip install ansible==2.1
