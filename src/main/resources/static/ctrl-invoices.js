@@ -1,0 +1,57 @@
+angular.module('App').controller('InvoiceCtrl', function ($rootScope, $scope, $state, $uibModal, $log, $http, alertify, auth, firebase) {
+
+    firebase('invoices').then(function (it) {
+        $scope.invoices = it;
+    });
+
+    $scope.open = function (size) {
+
+        var popup = $uibModal.open({
+            templateUrl: 'myModalContent.html',
+            controller: 'CreateInvoicePopupCtrl',
+            size: size
+        });
+
+        popup.result.then(function (invoice) {
+            alert(JSON.stringify(invoice));
+            $http.post("http://801b61f5.ngrok.io/invoices", invoice)
+                .success(function () {
+                    alertify.success("OKI");
+                })
+                .error(function () {
+                    alertify.error("Fuckup");
+                })
+
+        }, function () {
+            $log.info('Modal dismissed at: ' + new Date());
+        });
+    };
+
+
+    $scope.invoiceTo = function (invoice) {
+        var popup = $uibModal.open({
+            templateUrl: 'createEmail.html',
+            controller: 'CreateEmailPopupCtrl',
+            size: 'lg',
+            resolve: {
+                email: function () {
+                    return {to: invoice.recipient.emailAddress, documentNumber: invoice.documentNumber}
+                }
+            }
+        });
+        popup.result.then(function (email) {
+            $http.post("http://801b61f5.ngrok.io/email/" + email.to + "/" + "eduards@sizovs.net" + "/" + email.documentNumber, email.body)
+                .success(function () {
+                    alertify.success("OKI");
+                })
+                .error(function () {
+                    alertify.error("Fuckup");
+                })
+
+        }, function () {
+            $log.info('Modal dismissed at: ' + new Date());
+        });
+
+    }
+
+});

@@ -1,0 +1,424 @@
+<!doctype html>
+<html ng-app="eventApp" ng-controller='EventCtrl as event'>
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Invoice {{documentNumber}}</title>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.6/angular.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.6/angular-route.min.js"></script>
+    <script src="//www.gstatic.com/firebasejs/3.1.0/firebase.js"></script>
+    <script>
+        var config = {
+            apiKey: "AIzaSyAWD1zzN23OTchDyQhH462xJ8kW30_j0uU",
+            authDomain: "money-edc4a.firebaseapp.com",
+            databaseURL: "https://money-edc4a.firebaseio.com",
+            storageBucket: ""
+        };
+        firebase.initializeApp(config);
+    </script>
+    <script type="text/javascript">
+        (function (angular) {
+            'use strict';
+            var app = angular.module('eventApp', ["ngRoute"]);
+            app.config(function ($routeProvider, $locationProvider) {
+                $locationProvider.html5Mode(true);
+            });
+
+
+            app.controller('EventCtrl', function ($scope, $http, $location, $q) {
+                var documentNumber = $location.path().split(/[\s/]+/).pop();
+                $scope.documentNumber = documentNumber;
+
+                function invoices() {
+                    var def = $q.defer();
+                    firebase.database().ref('invoices' + '/' + documentNumber).once('value').then(function (snapshot) {
+                        var count = snapshot.val();
+                        def.resolve(count);
+                    });
+                    return def.promise;
+                }
+
+                invoices()
+                        .then(function (it) {
+                            $scope.invoice = it;
+                            var issuedAt = $scope.invoice.issuedAt;
+                            $scope.invoice.issuedAt = moment(
+                                    [issuedAt.year, issuedAt.monthValue - 1, issuedAt.dayOfMonth]
+                            ).format('MMMM Do YYYY');
+
+                            var dueAt = $scope.invoice.dueAt;
+                            $scope.invoice.dueAt = moment(
+                                    [dueAt.year, dueAt.monthValue - 1, dueAt.dayOfMonth]
+                            ).format('MMMM Do YYYY');
+                        })
+            });
+        })(window.angular);
+    </script>
+    <script type="text/javascript">
+        angular.element(document.getElementsByTagName('head')).append(angular.element('<base href="' + window.location.pathname + '" />'));
+    </script>
+    <style>
+        html {
+            font: 16px/1 'Open Sans', sans-serif;
+            overflow: auto;
+            padding: 0.5in;
+        }
+
+        html {
+            background: #999;
+            cursor: default;
+        }
+
+        body {
+            box-sizing: border-box;
+            height: 11in;
+            margin: 0 auto;
+            overflow: hidden;
+            padding: 0.5in;
+            width: 8.5in;
+        }
+
+        body {
+            background: #FFF;
+            border-radius: 1px;
+            box-shadow: 0 0 1in -0.25in rgba(0, 0, 0, 0.5);
+        }
+
+        h1 {
+            font: bold 100% sans-serif;
+            letter-spacing: 0.5em;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        header {
+            margin: 0 0 3em;
+        }
+
+        header:after {
+            clear: both;
+            content: "";
+            display: table;
+        }
+
+        header h1 {
+            background: #000;
+            border-radius: 0.25em;
+            color: #FFF;
+            margin: 0 0 1em;
+            padding: 0.5em 0;
+        }
+
+        header {
+            margin: 0 0 3em;
+        }
+
+        header address {
+            float: left;
+            font-size: 75%;
+            font-style: normal;
+            line-height: 1.25;
+            margin: 0 1em 1em 0;
+        }
+
+        header address p {
+            margin: 0 0 0.5em;
+        }
+
+        header span, header img {
+            display: block;
+            float: right;
+        }
+
+        header span {
+            margin: 0 0 1em 1em;
+            max-height: 25%;
+            max-width: 60%;
+            position: relative;
+        }
+
+        header img {
+            max-height: 100%;
+            max-width: 100%;
+        }
+
+        /* article */
+
+        article, article address, table.meta, table.inventory {
+            margin: 0 0 3em;
+        }
+
+        article:after {
+            clear: both;
+            content: "";
+            display: table;
+        }
+
+        article h1 {
+            clip: rect(0 0 0 0);
+            position: absolute;
+        }
+
+        article address {
+            float: left;
+            font-size: 75%;
+            font-style: normal;
+            line-height: 1.25;
+        }
+
+        article address p {
+            margin: 0 0 0.25em;
+        }
+
+        /* table meta & balance */
+
+        table {
+            font-size: 75%;
+            table-layout: fixed;
+            width: 100%;
+        }
+
+        table {
+            border-collapse: separate;
+            border-spacing: 2px;
+        }
+
+        th, td {
+            border-width: 1px;
+            padding: 0.5em;
+            position: relative;
+            text-align: left;
+        }
+
+        th, td {
+            border-radius: 0.25em;
+            border-style: solid;
+        }
+
+        th {
+            background: #EEE;
+            border-color: #BBB;
+        }
+
+        td {
+            border-color: #DDD;
+        }
+
+        table.meta, table.balance {
+            float: right;
+            width: 36%;
+        }
+
+        table.meta:after, table.balance:after {
+            clear: both;
+            content: "";
+            display: table;
+        }
+
+        /* table meta */
+
+        table.meta th {
+            width: 40%;
+        }
+
+        table.meta td {
+            width: 60%;
+        }
+
+        /* table items */
+
+        table.inventory {
+            clear: both;
+            width: 100%;
+        }
+
+        table.inventory th {
+            font-weight: bold;
+            text-align: center;
+        }
+
+        table.inventory th:nth-child(1) {
+            width: 24%;
+        }
+
+        table.inventory th:nth-child(2) {
+            width: 40%;
+        }
+
+        table.inventory th:nth-child(3) {
+            width: 12%;
+        }
+
+        table.inventory th:nth-child(4) {
+            width: 12%;
+        }
+
+        table.inventory th:nth-child(5) {
+            width: 12%;
+        }
+
+        table.inventory td:nth-child(1) {
+            width: 26%;
+        }
+
+        table.inventory td:nth-child(2) {
+            width: 38%;
+        }
+
+        table.inventory td:nth-child(3) {
+            text-align: right;
+            width: 12%;
+        }
+
+        table.inventory td:nth-child(4) {
+            text-align: right;
+            width: 12%;
+        }
+
+        table.inventory td:nth-child(5) {
+            text-align: right;
+            width: 12%;
+        }
+
+        /* table balance */
+
+        table.balance th, table.balance td {
+            width: 50%;
+        }
+
+        table.balance td {
+            text-align: right;
+        }
+
+        /* aside */
+
+        aside h1 {
+            border: none;
+            border-width: 0 0 1px;
+            margin: 0 0 1em;
+        }
+
+        aside h1 {
+            border-color: #999;
+            border-bottom-style: solid;
+        }
+
+        @media print {
+            * {
+                -webkit-print-color-adjust: exact;
+            }
+
+            html {
+                background: none;
+                padding: 0;
+            }
+
+            body {
+                box-shadow: none;
+                margin: 0;
+            }
+
+            span:empty {
+                display: none;
+            }
+
+            .add, .cut {
+                display: none;
+            }
+        }
+
+        @page {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Invoice</h1>
+    <address>
+        <p><strong>From</strong></p>
+        <p>
+            Craftsmans Passion SIA<br>
+            LV40103922894<br>
+            Ratsupites 3-72, LV-1067, Riga, Latvia
+        </p>
+        <p>LV77NDEA0000084216700<br>Nordea Bank AB Latvia branch</p>
+    </address>
+        <span>
+            <a href="http://devternity.com"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAACWCAIAAACzY+a1AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo4NUZCRkQ3RDNDM0IxMUU2QTExQ0JDODJENTEzMUM1MCIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo4NUZCRkQ3RTNDM0IxMUU2QTExQ0JDODJENTEzMUM1MCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjg1RkJGRDdCM0MzQjExRTZBMTFDQkM4MkQ1MTMxQzUwIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjg1RkJGRDdDM0MzQjExRTZBMTFDQkM4MkQ1MTMxQzUwIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+hcay+gAAHgpJREFUeNrsXQl4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"/>
+        </a></span>
+</header>
+
+<article>
+    <h1>Recipient</h1>
+    <address>
+        <p><strong>Invoice for</strong></p>
+        <p>
+            {{invoice.billedName}}<br>
+            {{invoice.billedIdentificationNumber}}<br>
+            {{invoice.billedAddress}}
+        </p>
+    </address>
+    <table class="meta">
+        <tbody>
+        <tr>
+            <th><span class="entry">Invoice #</span></th>
+            <td><span>{{documentNumber}}</span></td>
+        </tr>
+        <tr>
+            <th><span>Issue Date</span></th>
+            <td><span>{{invoice.issuedAt}}</span></td>
+        </tr>
+        <tr>
+            <th><span>Due Date</span></th>
+            <td><span>{{invoice.dueAt}}</span></td>
+        </tr>
+        </tbody>
+    </table>
+    <table class="inventory">
+        <thead>
+        <tr>
+            <th><span>Item</span></th>
+            <th><span>Description</span></th>
+            <th><span>Rate</span></th>
+            <th><span>Quantity</span></th>
+            <th><span>Price</span></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><span>{{invoice.itemName}}</span></td>
+            <td><span>{{invoice.itemDescription}}</span></td>
+            <td><span data-prefix="">€</span><span>{{invoice.discountedRate | number:2}}</span></td>
+            <td><span>{{invoice.quantity}}</span></td>
+            <td><span data-prefix="">€</span><span>{{invoice.price | number:2}}</span></td>
+        </tr>
+        </tbody>
+    </table>
+    <table class="balance">
+        <tbody>
+        <tr>
+            <th><span>Subtotal</span></th>
+            <td><span data-prefix="">€</span><span>{{invoice.subtotal | number:2}}</span></td>
+        </tr>
+        <tr>
+            <th><span>VAT 21%</span></th>
+            <td><span data-prefix="">€</span><span>{{invoice.vat | number:2}}</span></td>
+        </tr>
+        <tr>
+            <th><span>Total</span></th>
+            <td><strong><span data-prefix="">€</span><span>{{invoice.total | number:2}}</span></strong></td>
+        </tr>
+        </tbody>
+    </table>
+</article>
+
+<aside>
+    <h1><span>Additional Notes</span></h1>
+    <div>
+        <p>Please make sure that funds are transferred before {{invoice.dueAt}}.</p>
+    </div>
+</aside>
+</body>
+</html>

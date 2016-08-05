@@ -1,0 +1,49 @@
+- hosts: all
+  roles:
+      - ansible-java8-oracle
+  remote_user: root
+  tasks:
+    - name: Install supervisor
+      apt: name=supervisor state=latest
+
+    - name: Ensure application directory exists on target host
+      file:
+        path: /opt/capital/latest
+        recurse: yes
+        state: directory
+
+
+    - name: Copy supervisor configuration
+      copy: src=supervisor.conf dest=/etc/supervisor/conf.d/capital.conf
+
+    - name: Install the app
+      copy: src=../build/libs/capital-{{appVersion}}.jar dest=/opt/capital/latest/capital.jar mode="u+rx,g-rx"
+
+    - name: Restart supervisor
+      service: name=supervisor state=restarted
+
+    - name: start the app
+      supervisorctl: name=capital state=started
+
+
+
+#      - name: health check
+#            health_check:
+#                url: "{{inventory_hostname}}/health"
+#                delay_between_tries: 5
+#                max_retries: 20
+#                expected_regexp: "alive"
+#        pre_tasks:
+#          - name: disable nagios alerts for this host webserver service
+#            nagios: action=disable_alerts host={{ inventory_hostname }} services=webserver
+#          - name: disable the server in haproxy
+#            haproxy: state=disabled host={{ inventory_hostname }}
+#          - name: stop the app
+#            supervisorctl: name=app state=stopped
+
+#- name: health check
+#      health_check:
+#          url: "{{inventory_hostname}}/health"
+#          delay_between_tries: 5
+#          max_retries: 20
+#          expected_regexp: "alive"

@@ -1,0 +1,47 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:1.4.0.RELEASE"
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'groovy'
+apply plugin: 'spring-boot'
+
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+jar {
+    baseName = 'capital'
+    version = appVersion
+    manifest {
+        attributes("Implementation-Title": baseName, "Implementation-Version": version)
+    }
+}
+
+springBoot {
+    mainClass = 'net.sizovs.capital.CapitalApplication'
+}
+
+configurations {
+    compile.exclude module: "spring-boot-starter-tomcat"
+}
+
+dependencies {
+    compile 'org.codehaus.groovy:groovy-all:2.4.7'
+    compile 'com.firebase:firebase-client-jvm:2.2.4'
+    compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.6.6'
+    compile 'io.reactivex:rxgroovy:1.0.3'
+    compile 'io.reactivex:rxjava-math:1.0.0'
+    compile 'org.freemarker:freemarker:2.3.20'
+    compile 'org.apache.httpcomponents:httpmime:4.5.2'
+    compile 'com.auth0:java-jwt:2.2.0'
+    compile "org.springframework.boot:spring-boot-starter-web:1.4.0.RELEASE"
+    compile "org.springframework.boot:spring-boot-starter-jetty:1.4.0.RELEASE"
+}
