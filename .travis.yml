@@ -10,6 +10,7 @@ install:
   # Install Transcrypt
   - git clone https://github.com/elasticdog/transcrypt.git
   - sudo ln -s ${PWD}/transcrypt/transcrypt /usr/local/bin/transcrypt
+  - transcrypt -c aes-256-cbc -p '$TRANSCRYPT_KEY'
 
   # Install Ansible
   - pip install ansible==2.1
@@ -18,11 +19,12 @@ install:
   - sudo apt-get install oracle-java8-installer
 
 script:
+  - echo $TRANSCRYPT_KEY
   - ./gradlew build -PappVersion=$TRAVIS_BUILD_NUMBER
   - ansible-playbook -i /provision/production.hosts /provision/deploy-playbook.yml --extra-vars "appVersion=$TRAVIS_BUILD_NUMBER"
 
 env:
   global:
-    secure:
+    secure: "tM2tHKH3l9eP8NIedVzd/Lv6iKGjqoLHNMGd9tPurrWVrOxLs8N/aBDe0b+ise8Lo/QqLLbTlZySQLFSKAr+GfZRb1ZRL6rzl+EI8mlfNXn1DUJWzWIX16W/GmBXVgV7L0zlIZFFPgmQmk3OEARkOOO352iogPkEBUKTpzyOjxS+CHMT1/G4d3zbhHR9PADFshrElQG9DIdDRX+ik1RstgDG2fgpDOoSJ8ULRHUWaGLVlkB02Ffw8x3/5gIje0hw8JVD7hi/S6Gv0sUl9PtxBRjnzCa1PtjYcsIkpzjajEFA61tzdh0Tfy6asN2y7Uue5QGuuCqUK8Go4P8+21SFid5rjhPKNObidIVfGYjeqoEw+gu+y/ZW3nuw1UToC4C0yRRQshxG0+jy594fXWcmVjvuXswegHTRLGHuXVOU5sTOMiWJ3Z0GeLgdBMuPgpb1x7AUcrCJYHooXh/szO1nm8Bfk3A1Fma/CfFmmAYwLGuPljfknVGhpj1ykHfFs5t0Xo38B7kgeR1yzP5JpqHkHt41MUZtiSdhKLPVtuf+MxeCfbPMXROx/nSTXub1pF4JwBOTcA8/Oiv6iMgN5bLmlKez4aOdmgB27DUWCEbxjpxZAXparKJdCvWmmhDL24Wf9bQlKgVLDPdox4hykxOoSdaxYr6DOERID2QuXaBNBuo="
 
     # $ sudo apt-get install oracle-java8-set-default
