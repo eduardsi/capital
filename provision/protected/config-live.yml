@@ -1,0 +1,12 @@
+tickets:
+  api:
+    key: wJVu1OJn5VatBhYvB9JlM3oK3q08KwLt8TfbIN6x
+
+security:
+  crypt:
+    email:
+      salt: secret12
+
+auth0:
+  client_secret: KfOtJYcQ-ZpXQAlkuNyu-5B842fNJGSsgwsRNqO3ediJPbsRYjv4Epz_IornND1L
+  client_id: mKSTU7Ad3BApunGUtx8kwPXkITsYDuPY

@@ -17,7 +17,7 @@
       copy: src=supervisor.conf dest=/etc/supervisor/conf.d/capital.conf
 
     - name: Install the configuration
-      copy: src=config-live.yml dest=/opt/capital/latest/config.yml
+      copy: src=protected/config-live.yml dest=/opt/capital/latest/config.yml
 
     - name: Install the app
       copy: src=../build/libs/capital-{{appVersion}}.jar dest=/opt/capital/latest/capital.jar mode="u+rx,g+rx"
