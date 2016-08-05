@@ -21,6 +21,7 @@ install:
 script:
   - transcrypt --display
   - java -version
+  - javac -version
   - ./gradlew build -PappVersion=$TRAVIS_BUILD_NUMBER
   - cd provision
   - ansible-galaxy install -r requirements.yml
