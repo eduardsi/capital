@@ -1,12 +1,6 @@
-tickets:
-  api:
-    key: wJVu1OJn5VatBhYvB9JlM3oK3q08KwLt8TfbIN6x
-
-security:
-  crypt:
-    email:
-      salt: secret12
-
-auth0:
-  client_secret: KfOtJYcQ-ZpXQAlkuNyu-5B842fNJGSsgwsRNqO3ediJPbsRYjv4Epz_IornND1L
-  client_id: mKSTU7Ad3BApunGUtx8kwPXkITsYDuPY
+U2FsdGVkX18cyOcMwm1LwK65nZyshs1gkEN7RkG0D+9kCPU9vEGvwrsslN1Pnj7G
+fTDL4arBMCNhqnIkcTifKvz8Oi6GyYDPbJ+6drg8Ut88j35HrlhKWdkUM/6bf0de
+oK0xfvHjr4smIC7hJ/sUW7oeSkfenlFf/qtYGk3I+QNhWn7zDZZMMDTh2EFXTSOe
+jg93GGDPEQ4L9naf+ZIKQyy6xBNEtolcEmeYcjxATspUgjYaxZocvU7e7A35O7QP
+hOLi6vwrh2B8IStKp4xh7MdI6pMruoPoZMNVhuLD5wBE2M0pKwgSId+y10ZK773B
+pLrk31dRI2qrHUvpo+mih7YI8JftsXBoib06ca2jy+Q=

@@ -1,1 +1,1 @@
-provision/protected/* filter=crypt diff=crypt
+provision/protected/** filter=crypt diff=crypt
