@@ -25,7 +25,8 @@ script:
   - export JAVA_HOME=/usr/lib/jvm/java-8-oracle
   - ./gradlew build -PappVersion=$TRAVIS_BUILD_NUMBER
   - cd provision
-  - ansible-galaxy install -r requirements.yml
+  - export ANSIBLE_ROLES_PATH=$PWD/ansible_roles/
+  - ansible-galaxy install -r requirements.yml -p $ANSIBLE_ROLES_PATH
   - ansible-playbook -i production.hosts deploy-playbook.yml --extra-vars "appVersion=$TRAVIS_BUILD_NUMBER"
 
 env:
