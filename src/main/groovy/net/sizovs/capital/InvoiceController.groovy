@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*
 
 import java.util.concurrent.atomic.AtomicLong
 
-@CrossOrigin
 @RestController
 class InvoiceController {
 
@@ -29,8 +28,6 @@ class InvoiceController {
 
     def firebaseRoot = new Firebase("https://money-edc4a.firebaseio.com")
     def ordersRef = firebaseRoot.child("orders")
-
-
 
 
     @PostMapping("/invoices")

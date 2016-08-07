@@ -26,6 +26,8 @@ class Order implements FirebaseRepository.FirebaseRef {
 
     Collection<Ticket> tickets = []
 
+    Long reservations
+
     @JsonIgnore
     boolean isFree() {
         pricingInfo.discountPercent == 100.00
@@ -50,7 +52,7 @@ class Order implements FirebaseRepository.FirebaseRef {
                 billedName: billingInformation.name,
                 billedAddress: billingInformation.address,
                 billedIdentificationNumber: billingInformation.identificationNumber,
-                quantity: tickets.size(),
+                quantity: tickets ? tickets.size() : reservations,
                 vatPercents: 21.00,
                 discountPercents: pricingInfo.discountPercent,
                 rate: pricingInfo.price,
