@@ -11,11 +11,12 @@ class EmailTemplate {
 
     EmailTemplate(String name) {
         def cfg = new Configuration()
-        cfg.setClassForTemplateLoading(Class, "/freemarker/")
+        cfg.setClassForTemplateLoading(getClass(), "/freemarker/")
         cfg.incompatibleImprovements = new Version(2, 3, 20)
         cfg.defaultEncoding = "UTF-8"
         cfg.outputEncoding = "UTF-8"
         cfg.locale = Locale.US
+        cfg.localizedLookup = false
         cfg.templateExceptionHandler = TemplateExceptionHandler.RETHROW_HANDLER
         this.template = cfg.getTemplate("${name}.ftl")
     }
