@@ -58,6 +58,7 @@ dependencies {
     compile "org.springframework.boot:spring-boot-starter-web:1.4.0.RELEASE"
     compile "org.springframework.boot:spring-boot-starter-jetty:1.4.0.RELEASE"
     compile "org.springframework.boot:spring-boot-starter-actuator:1.4.0.RELEASE"
+    compile 'com.amazonaws:aws-java-sdk-s3:1.11.24'
 }
 
 

@@ -1,14 +1,13 @@
 package net.sizovs.capital
 
 import groovy.util.logging.Slf4j
+import net.sizovs.capital.infra.mailgun.Mailgun
 import org.apache.http.Consts
-import org.apache.http.auth.AuthScope
-import org.apache.http.auth.UsernamePasswordCredentials
+import org.apache.http.client.HttpClient
 import org.apache.http.client.methods.HttpPost
 import org.apache.http.entity.ContentType
 import org.apache.http.entity.mime.MultipartEntityBuilder
-import org.apache.http.impl.client.BasicCredentialsProvider
-import org.apache.http.impl.client.HttpClientBuilder
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.io.Resource
 import org.springframework.stereotype.Component
@@ -26,13 +25,15 @@ class EmailSender {
     @Value("classpath:linkedin.png")
     Resource linkedin
 
+    @Value('${mailgun.password}')
+    String password
+
+    @Autowired
+    @Mailgun
+    HttpClient httpClient
+
     void send(Email email) {
-        def credentialsProvider = new BasicCredentialsProvider()
-        credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials("api", "key-bc4508bf6d471ade7470e14af8c5d8d6"))
-
-        def httpClient = HttpClientBuilder.create().setDefaultCredentialsProvider(credentialsProvider).build()
         def post = new HttpPost("https://api.mailgun.net/v3/sizovs.net/messages")
-
 
         def utf8Text = ContentType.create("text/plain", Consts.UTF_8)
         def builder = MultipartEntityBuilder

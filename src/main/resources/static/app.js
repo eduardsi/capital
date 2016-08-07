@@ -1,4 +1,4 @@
-var app = angular.module('App', ["ui.bootstrap", "ui.router", "ngRoute", "ngAlertify", "ngDialog", "ngSanitize", 'auth0', 'angular-storage', 'angular-jwt']);
+var app = angular.module('App', ["ui.bootstrap", "ui.router", "ngRoute", "ngAlertify", "ngDialog", "ngSanitize", 'auth0', 'angular-storage', 'angular-jwt', 'pdf']);
 
 app.constant('API', 'http://test-routes.herokuapp.com');
 
@@ -6,7 +6,8 @@ app.constant('API', 'http://test-routes.herokuapp.com');
 app.controller('MainCtrl', function ($scope) {
     $scope.tabs = [
         {title: "Orders", route: "orders"},
-        {title: "Invoices", route: "invoices"}
+        {title: "Invoices", route: "invoices"},
+        {title: "Expenses", route: "expenses"}
     ];
 });
 
@@ -36,6 +37,15 @@ app.config(function ($stateProvider, $urlRouterProvider, $httpProvider, $locatio
             requiresLogin: true
         }
     });
+
+    $stateProvider.state('expenses', {
+        url: "/expenses",
+        templateUrl: "view-expenses.html",
+        controller: 'ExpenseCtrl',
+        data: {
+            requiresLogin: true
+        }
+    });    
 
     $urlRouterProvider.otherwise('orders');
 
