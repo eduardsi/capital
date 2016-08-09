@@ -56,7 +56,11 @@ class EmailSender {
 
         log.info "Sending email ($email.subject) to $email.to"
 
-        httpClient.execute(post)
+        def response = httpClient.execute(post)
+        if (response.statusLine.statusCode != 200) {
+            println response?.entity?.content
+            throw new IllegalStateException("Unable to send email")
+        }
     }
 
 }
