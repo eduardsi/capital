@@ -67,6 +67,7 @@ class InvoiceController {
     WebResult sendTickets(@PathVariable String orderRef, @PathVariable boolean test) {
         ticketLinkRepository.ticketLinksByOrderRef(orderRef) { TicketController.TicketLinks ticketLinks ->
             def email = generateEmail(ticketLinks)
+            email.cc = "eduards@sizovs.net"
             if (test) {
                 email.to = "eduards@sizovs.net"
             }
@@ -80,6 +81,7 @@ class InvoiceController {
 
         invoiceRepository.invoiceByOrderRef(orderRef) { Invoice invoice ->
             def email = generateEmail(invoice)
+            email.cc = "eduards@sizovs.net"
             if (test) {
                 email.to = "eduards@sizovs.net"
             }
