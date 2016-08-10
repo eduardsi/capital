@@ -7,7 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestMethod
+import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.client.RestTemplate
 import rx.Observable
 
@@ -36,8 +39,7 @@ class TicketController {
                 .flatMap { Observable.from it.tickets.collect { ticket -> [ticket: ticket, order: it] } }
                 .map {
 
-            def ticketId = new EncryptedText(emailSalt, it.ticket.email) as String
-            def body = new TicketRequest(email: it.ticket.email, product: it.order.productName, ticketId: ticketId, name: it.ticket.name, company: it.ticket.employer)
+            def body = new TicketRequest(email: it.ticket.email, product: it.order.productName, name: it.ticket.name, company: it.ticket.employer)
             def headers = new HttpHeaders()
             headers.add("x-api-key", ticketApiKey)
             def entity = new HttpEntity<TicketRequest>(body, headers)
@@ -67,13 +69,17 @@ class TicketController {
         String owner
     }
 
-    @Immutable
-    static class TicketRequest {
+    @ToString
+    class TicketRequest {
         String email
         String product
-        String ticketId
         String name
         String company
+
+        String getTicketId() {
+            def encryptedEmail = new EncryptedText(emailSalt, email)
+            "${encryptedEmail}___$product"
+        }
     }
 
     @Immutable
