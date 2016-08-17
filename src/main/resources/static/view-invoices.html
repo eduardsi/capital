@@ -3,6 +3,7 @@
             <thead>
             <tr>
                 <th>#</th>
+                <th>Issued</th>
                 <th>Bill to</th>
                 <th>Service</th>
                 <th>Total</th>
@@ -12,6 +13,7 @@
             <tbody>
             <tr ng-repeat="invoice in invoices track by $index">
                 <td><span><a href="http://sizovs.net.s3-website.eu-central-1.amazonaws.com/?documentNumber={{invoice.documentNumber}}">{{invoice.documentNumber}}</a></span></td>
+                <td>{{invoice.issuedAt | simplifyTime}}</td>
                 <td><span>{{invoice.billedIdentificationNumber}} - {{invoice.billedName}} - {{invoice.billedAddress}}</span>
                 </td>
                 <td><span>{{invoice.itemName}} / {{invoice.itemDescription}}</span></td>

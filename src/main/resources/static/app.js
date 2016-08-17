@@ -11,6 +11,22 @@ app.controller('MainCtrl', function ($scope) {
     ];
 });
 
+app.filter('simplifyTime', function () {
+    return function (input) {
+        return moment(
+            [input.year, input.monthValue - 1, input.dayOfMonth]
+        ).format('DD.MM.YYYY');
+    };
+});
+
+app.filter('humanizeTime', function () {
+    return function (input) {
+        return moment(
+            [input.year, input.monthValue - 1, input.dayOfMonth]
+        ).format('MMMM Do YYYY');
+    };
+});
+
 
 app.config(function ($stateProvider, $urlRouterProvider, $httpProvider, $locationProvider, jwtInterceptorProvider, authProvider) {
 
@@ -45,7 +61,7 @@ app.config(function ($stateProvider, $urlRouterProvider, $httpProvider, $locatio
         data: {
             requiresLogin: true
         }
-    });    
+    });
 
     $urlRouterProvider.otherwise('orders');
 
