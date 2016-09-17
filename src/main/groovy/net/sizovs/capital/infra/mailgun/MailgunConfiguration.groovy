@@ -2,8 +2,8 @@ package net.sizovs.capital.infra.mailgun
 
 import org.apache.http.auth.AuthScope
 import org.apache.http.auth.UsernamePasswordCredentials
-import org.apache.http.client.HttpClient
 import org.apache.http.impl.client.BasicCredentialsProvider
+import org.apache.http.impl.client.CloseableHttpClient
 import org.apache.http.impl.client.HttpClientBuilder
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
@@ -17,7 +17,7 @@ class MailgunConfiguration {
 
     @Mailgun
     @Bean
-    HttpClient mailgun() {
+    CloseableHttpClient mailgun() {
         def credentialsProvider = credentialsProvider()
         def httpClient = HttpClientBuilder.create().setDefaultCredentialsProvider(credentialsProvider).build()
         httpClient

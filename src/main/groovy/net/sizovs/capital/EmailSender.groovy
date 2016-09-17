@@ -3,10 +3,10 @@ package net.sizovs.capital
 import groovy.util.logging.Slf4j
 import net.sizovs.capital.infra.mailgun.Mailgun
 import org.apache.http.Consts
-import org.apache.http.client.HttpClient
 import org.apache.http.client.methods.HttpPost
 import org.apache.http.entity.ContentType
 import org.apache.http.entity.mime.MultipartEntityBuilder
+import org.apache.http.impl.client.CloseableHttpClient
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.io.Resource
@@ -30,7 +30,7 @@ class EmailSender {
 
     @Autowired
     @Mailgun
-    HttpClient httpClient
+    CloseableHttpClient httpClient
 
     void send(Email email) {
         def post = new HttpPost("https://api.mailgun.net/v3/sizovs.net/messages")
@@ -56,11 +56,14 @@ class EmailSender {
 
         log.info "Sending email ($email.subject) to $email.to"
 
-        def response = httpClient.execute(post)
-        if (response.statusLine.statusCode != 200) {
+        httpClient.execute(post).withCloseable { response ->
             println response?.entity?.content
-            throw new IllegalStateException("Unable to send email")
+            if (response.statusLine.statusCode != 200) {
+                throw new IllegalStateException("Unable to send email")
+            }
         }
+
+
     }
 
 }

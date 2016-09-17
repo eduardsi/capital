@@ -54,12 +54,14 @@ class InvoiceController {
     @PostMapping("/email/{to}/{cc}/{documentNumber}")
     void sendInvoice(@PathVariable to, @PathVariable cc, @PathVariable documentNumber, @RequestBody String body) {
 
+        println "Received request"
         def emailTemplate = new EmailTemplate("default")
         def emailBody = emailTemplate.render([lines: body.readLines(), documentNumber: documentNumber])
         def email = new Email(body: emailBody, subject: "Invoice $documentNumber")
         email.to = to
         email.cc = cc
 
+        println "Preparing to send"
         emailSender.send(email)
     }
 
