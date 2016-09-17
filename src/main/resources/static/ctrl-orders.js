@@ -51,15 +51,34 @@ angular.module('App').controller('OrderCtrl', function ($scope, $http, $location
 
     $scope.generateInvoice = function (index) {
         var key = $scope.keys[index];
-        $http.post("/orders/" + key + "/invoices", {})
-            .success(function () {
-                alertify.success("OKI");
-            })
-            .error(function () {
-                alertify.error("Fuckup");
-            })
-
+        ngDialog.open({
+            template: 'invoice-for-order.html',
+            className: 'ngdialog-theme-default',
+            controller: ['$scope', function ($popup) {
+                $popup.generateInvoiceWithVat = function (vat) {
+                    $http.post("/orders/" + key + "/invoices/" + vat, {})
+                        .success(function () {
+                            alertify.success("OKI");
+                        })
+                        .error(function () {
+                            alertify.error("Fuckup");
+                        })
+                }
+            }]
+        });
     };
+
+    // $scope.generateInvoice = function (index) {
+    //     var key = $scope.keys[index];
+    //     $http.post("/orders/" + key + "/invoices", {})
+    //         .success(function () {
+    //             alertify.success("OKI");
+    //         })
+    //         .error(function () {
+    //             alertify.error("Fuckup");
+    //         })
+    //
+    // };
 
     $scope.generateTicket = function (index) {
         var key = $scope.keys[index];

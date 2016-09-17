@@ -44,7 +44,7 @@ class Order implements FirebaseRepository.FirebaseRef {
         this
     }
 
-    Invoice newInvoice(String documentNumber) {
+    Invoice newInvoice(String documentNumber, BigDecimal vat) {
         def invoice = new Invoice(
                 recipient: new Recipient(billingInformation.email),
                 orderRef: ref,
@@ -53,7 +53,7 @@ class Order implements FirebaseRepository.FirebaseRef {
                 billedAddress: billingInformation.address,
                 billedIdentificationNumber: billingInformation.identificationNumber,
                 quantity: tickets ? tickets.size() : reservations,
-                vatPercents: 21.00,
+                vatPercents: vat,
                 discountPercents: pricingInfo.discountPercent,
                 rate: pricingInfo.price,
                 itemName: productInfo.name,

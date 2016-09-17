@@ -101,8 +101,8 @@ class InvoiceController {
         email
     }
 
-    @RequestMapping(path = "/orders/{orderRef}/invoices", method = RequestMethod.POST)
-    void generateInvoice(@PathVariable String orderRef) {
+    @RequestMapping(path = "/orders/{orderRef}/invoices/{vat}", method = RequestMethod.POST)
+    void generateInvoice(@PathVariable String orderRef, @PathVariable BigDecimal vat) {
         def inc = new AtomicLong()
         def order = orderRepository.orderByRef(orderRef)
 
@@ -110,7 +110,7 @@ class InvoiceController {
         order
             .flatMap { productRepository.get(it.productName).map { product -> it.withProductInfo(product) } }
             .flatMap {
-                invoiceRepository.nextInvoiceNumber(inc).map { documentNumber -> it.newInvoice(documentNumber) }
+                invoiceRepository.nextInvoiceNumber(inc).map { documentNumber -> it.newInvoice(documentNumber, vat) }
             }
             .doOnNext {
                 invoiceRepository.save it
@@ -130,29 +130,6 @@ class InvoiceController {
     @RequestMapping(path = "/orders/{orderRef}/status/{status}", method = RequestMethod.POST)
     void setStatus(@PathVariable String orderRef, @PathVariable String status) {
         ordersRef.child(orderRef).child("status").value = status
-    }
-
-    @SuppressWarnings("GroovyAssignabilityCheck")
-    void createForRegistrations() {
-
-
-        def inc = new AtomicLong()
-
-        // @formatter:off
-        orderRepository.listTyped()
-            .filter { it.new }
-            .flatMap { productRepository.get(it.productName).map { product -> it.withProductInfo(product) } }
-            .doOnNext { println it }
-            .filter { !it.free }
-            .flatMap { invoiceRepository.nextInvoiceNumber(inc).map { documentNumber -> it.newInvoice(documentNumber) } }
-            .doOnNext {
-                invoiceRepository.save(it)
-                ordersRef.child(it.orderRef).child("invoice").value = new InvoiceInfo(documentNumber: it.documentNumber, issuedAt: it.issuedAt)
-            }
-            .subscribe({ println it }, { println "Exception, $it" })
-
-        // @formatter:on
-
     }
 
 
