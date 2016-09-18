@@ -27,6 +27,12 @@ app.filter('humanizeTime', function () {
     };
 });
 
+app.filter('children', function () {
+    return function(input) {
+        return _.size(input);
+    }
+});
+
 
 app.config(function ($stateProvider, $urlRouterProvider, $httpProvider, $locationProvider, jwtInterceptorProvider, authProvider) {
 
@@ -175,6 +181,21 @@ app.controller('CreateInvoicePopupCtrl', function ($scope, $uibModalInstance) {
     };
 
     $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
+});
+
+
+app.controller('ParticipantsPopupCtrl', function ($scope, $uibModalInstance, participants) {
+
+    $scope.participants = participants;
+    $scope.newParticipant = {};
+
+    $scope.add = function () {
+        $uibModalInstance.close($scope.newParticipant);
+    };
+
+    $scope.close= function () {
         $uibModalInstance.dismiss('cancel');
     };
 });

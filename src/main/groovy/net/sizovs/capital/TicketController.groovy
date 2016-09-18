@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
@@ -30,6 +31,11 @@ class TicketController {
     TicketLinkRepository ticketLinkRepository
 
     RestTemplate rest = new RestTemplate()
+
+    @RequestMapping(path = "/orders/{orderRef}/participants", method = RequestMethod.POST)
+    void addParticipant(@PathVariable String orderRef, @RequestBody Participant participant) {
+        orderRepository.addParticipant(orderRef, participant)
+    }
 
     @RequestMapping(path = "/orders/{orderRef}/tickets", method = RequestMethod.POST)
     void generateTicket(@PathVariable String orderRef) {

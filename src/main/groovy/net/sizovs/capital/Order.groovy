@@ -24,6 +24,7 @@ class Order implements FirebaseRepository.FirebaseRef {
 
     BillingInfo billingInformation
 
+    @JsonIgnore
     Collection<Ticket> tickets = []
 
     Long reservations

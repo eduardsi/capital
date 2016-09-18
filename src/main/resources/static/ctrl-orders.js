@@ -1,4 +1,4 @@
-angular.module('App').controller('OrderCtrl', function ($scope, $http, $location, $q, alertify, ngDialog, firebase) {
+angular.module('App').controller('OrderCtrl', function ($scope, $http, $location, $q, alertify, ngDialog, firebase, $uibModal) {
 
     alertify.closeLogOnClick(true);
     alertify.delay(10000);
@@ -68,17 +68,29 @@ angular.module('App').controller('OrderCtrl', function ($scope, $http, $location
         });
     };
 
-    // $scope.generateInvoice = function (index) {
-    //     var key = $scope.keys[index];
-    //     $http.post("/orders/" + key + "/invoices", {})
-    //         .success(function () {
-    //             alertify.success("OKI");
-    //         })
-    //         .error(function () {
-    //             alertify.error("Fuckup");
-    //         })
-    //
-    // };
+    $scope.participants = function (index) {
+        var order = $scope.keys[index];
+        var popup = $uibModal.open({
+            templateUrl: 'participants.html',
+            controller: 'ParticipantsPopupCtrl',
+            resolve: {
+                participants: function () {
+                    return $scope.orders[order].tickets;
+                }
+            }
+        });
+
+        popup.result.then(function (newParticipant) {
+            $http.post("/orders/" + order + "/participants", newParticipant)
+                .success(function () {
+                    alertify.success("OK!");
+                })
+                .error(function () {
+                    alertify.error("NOK");
+                })
+        });
+    };
+
 
     $scope.generateTicket = function (index) {
         var key = $scope.keys[index];
@@ -144,3 +156,4 @@ angular.module('App').controller('OrderCtrl', function ($scope, $http, $location
     };
 
 });
+
