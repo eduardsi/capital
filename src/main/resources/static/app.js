@@ -29,7 +29,7 @@ app.filter('humanizeTime', function () {
 
 app.filter('children', function () {
     return function(input) {
-        return _.size(input);
+        return _.size(_.reject(input, _.isNil));
     }
 });
 

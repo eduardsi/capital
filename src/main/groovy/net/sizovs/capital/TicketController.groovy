@@ -43,6 +43,7 @@ class TicketController {
 
         orderRepository.orderByRef(orderRef)
                 .flatMap { Observable.from it.tickets.collect { ticket -> [ticket: ticket, order: it] } }
+                .filter { it.ticket != null }
                 .map {
 
             def body = new TicketRequest(email: it.ticket.email, product: it.order.productName, name: it.ticket.name, company: it.ticket.employer)

@@ -21,7 +21,7 @@
             <td><span>{{order.couponCode}}</span></td>
             <td><span>{{order.tickets | children}} {{order.reservations}}</span><span
                     ng-repeat="link in order.links">&nbsp;<a
-                    ng-href="{{link.link}}">[x]</a>&nbsp;</span>
+                    ng-href="{{link.link}}">[x]</a></span>
             </td>
             <td><span>{{order.reservations ? '?' : 'KNOWN'}}</span></td>
             <td><span>{{order.billingInformation.name}}</span></td>
@@ -52,7 +52,7 @@
 
             <td>
                 <input type="button" class="btn btn-default btn-xs"
-                       value=" &#9863; participants"
+                       value=" &#9863; ppl"
                        ng-click="participants($index)"/>
                 <input ng-show="order.tickets | children" class="btn btn-default btn-xs" type="button"
                        value="↻ ticket"

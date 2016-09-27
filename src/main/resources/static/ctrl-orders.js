@@ -37,12 +37,6 @@ angular.module('App').controller('OrderCtrl', function ($scope, $http, $location
                             $scope.orders[orderRef].anInvoice = invoice[documentNumber];
                             $scope.orders[orderRef].delayed = momentize(invoice[documentNumber].dueAt).isBefore(moment().valueOf());
                         }
-
-                        var hasInvoice = $scope.orders[orderRef].invoice && !$scope.orders[orderRef].invoice.legacy;
-                        if (hasInvoice) {
-//                                                var documentNumber = $scope.orders[orderRef].invoice.documentNumber;
-                        }
-
                     });
 
             });
