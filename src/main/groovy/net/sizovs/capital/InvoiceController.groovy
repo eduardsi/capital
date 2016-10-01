@@ -123,7 +123,7 @@ class InvoiceController {
         def emailTemplate = new EmailTemplate("devternity")
         def emailBody = emailTemplate.render([documentNumber: it.documentNumber, name: it.billedName])
         def email = new Email(body: emailBody, subject: "Invoice $it.documentNumber")
-        email.to = it.recipient
+        email.to = it.recipient.emailAddress
         email
     }
 

@@ -59,7 +59,7 @@ class EmailSender {
         httpClient.execute(post).withCloseable { response ->
             println response?.entity?.content
             if (response.statusLine.statusCode != 200) {
-                throw new IllegalStateException("Unable to send email")
+                throw new IllegalStateException("Unable to send email $response.statusLine")
             }
         }
 
