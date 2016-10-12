@@ -52,7 +52,7 @@ class Order implements FirebaseRepository.FirebaseRef {
                 documentNumber: documentNumber,
                 billedName: billingInformation.name,
                 billedAddress: billingInformation.address,
-                billedIdentificationNumber: billingInformation.identificationNumber,
+                billedIdentificationNumber: billingInformation.vatNumber ? billingInformation.vatNumber : billingInformation.identificationNumber,
                 quantity: tickets ? tickets.size() : reservations,
                 vatPercents: vat,
                 discountPercents: pricingInfo.discountPercent,

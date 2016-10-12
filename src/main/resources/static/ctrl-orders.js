@@ -24,6 +24,24 @@ angular.module('App').controller('OrderCtrl', function ($scope, $http, $location
     firebase('orders')
         .then(function (it) {
             $scope.orders = it;
+
+            var ordersByProduct = _.groupBy($scope.orders, 'productName');
+            $scope.products = _.keys(ordersByProduct);
+
+
+            _.each($scope.products, function (v) {
+                $scope[v] = _.sumBy(ordersByProduct[v], function (o) {
+                    if (_.isNumber(o.reservations)) {
+                        return o.reservations;
+                    } else {
+                        return _.size(o.tickets);
+                    }
+                });
+            });
+
+
+            // {{order.tickets | children}} {{order.reservations}}
+
             $scope.keys = Object.keys(it);
             $scope.keys.forEach(function (orderRef, index) {
                 ticketLinks(orderRef)
