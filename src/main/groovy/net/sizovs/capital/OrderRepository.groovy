@@ -26,9 +26,9 @@ class OrderRepository extends FirebaseRepository {
 
             def tickets
             if (it.value.tickets instanceof List) {
-                tickets = it.value.tickets.collect { mapper.convertValue(it, Ticket) }
+                tickets = it.value?.tickets?.collect { mapper.convertValue(it, Ticket) }
             } else {
-                tickets = it.value.tickets.values().collect { mapper.convertValue(it, Ticket) }
+                tickets = it.value?.tickets?.values()?.collect { mapper.convertValue(it, Ticket) }
 
             }
 
