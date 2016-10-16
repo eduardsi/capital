@@ -1,7 +1,10 @@
 angular.module('App').controller('InvoiceCtrl', function ($rootScope, $scope, $state, $uibModal, $log, $http, alertify, auth, firebase) {
 
     firebase('invoices').then(function (it) {
-        $scope.invoices = it;
+        $scope.invoices = _.sortBy(it, [function (o) {
+            var orderNo = _.split(o.documentNumber, '-', 2)[1];
+            return _.toNumber(orderNo);
+        }]);
     });
 
     $scope.open = function (size) {
@@ -13,7 +16,6 @@ angular.module('App').controller('InvoiceCtrl', function ($rootScope, $scope, $s
         });
 
         popup.result.then(function (invoice) {
-            alert(JSON.stringify(invoice));
             $http.post("/invoices", invoice)
                 .success(function () {
                     alertify.success("OKI");

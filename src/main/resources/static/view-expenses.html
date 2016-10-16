@@ -8,7 +8,7 @@
         </thead>
         <tbody>
         <tr ng-repeat="expense in expenses track by $index">
-            <td>Invoice</td>
+            <td>{{$index + 1}}</td>
             <td>
                 <span><a ng-click="preview(expense.url)"><span class="glyphicon glyphicon-zoom-in"></span></a> </span>
                 <span><a href="{{expense.url}}"><span class="glyphicon glyphicon-download"></span></a> </span>
